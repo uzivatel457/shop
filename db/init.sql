@@ -18,6 +18,7 @@ CREATE TABLE `product` (
 CREATE TABLE `order` (
 	 `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	 `user_id` int NOT NULL,
+	 `total_price` double NOT NULL,
 	 `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	 `processed_at` datetime NULL,
 	 FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON UPDATE CASCADE ON DELETE RESTRICT

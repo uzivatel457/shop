@@ -1,2 +1,5 @@
 {block content}
+    {if $user->isLoggedIn()}
+        {control orderControl}
+    {/if}
 {/block}
