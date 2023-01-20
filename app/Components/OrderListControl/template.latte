@@ -1,11 +1,32 @@
-{foreach $lastOrders as $order}
-    {foreach $order->related('order_item') as $item}
-        {$item->quantity}
-        {$item->buy_price}
-        {$item->product->name}
-    {/foreach}
-    {$order->total_price}
-{/foreach}
-
+<h2>Latest orders:</h2>
+<ul class="list-group">
+    <li n:foreach="$lastOrders as $order" class="list-group-item">
+        <div class="row">
+            <div n:foreach="$order->related('order_item') as $item" class="col-12">
+                <div class="row">
+                    <div class="item-name col-3">
+                        {$item->product->name}
+                    </div>
+                    <div class="item-price col-3">
+                        Price: {$item->buy_price}
+                    </div>
+                    <div class="item-quantity col-3">
+                        Quantity: {$item->quantity}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                {if $order->processed_at}
+                    <span class="badge bg-success">processed</span>
+                {else}
+                    <span class="badge bg-warning">pending</span>
+                {/if}
+            </div>
+            <div class="col-6 text-end">
+                Total price: {$order->total_price}
+            </div>
+        </div>
+    </li>
+</ul>
 
 Total pending price: {$totalPendingPrice}

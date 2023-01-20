@@ -1,0 +1,6 @@
+parameters:
+
+database:
+	dsn: 'mysql:host=<host>;dbname=<dbname>'
+	user: <user>
+	password: <password>
