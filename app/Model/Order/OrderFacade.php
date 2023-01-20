@@ -23,7 +23,7 @@ final class OrderFacade
 	) {}
 
 
-	public function getOrders($userId)
+	public function getOrders(?int $userId = null, ?bool $processed = null, ?int $limit = null)
 	{
 		$query = $this->database
 			->table('order')
@@ -31,6 +31,18 @@ final class OrderFacade
 
 		if ($userId) {
 			$query->where('user_id', $userId);
+		}
+
+		if (!is_null($processed)) {
+			if ($processed) {
+				$query->where('processed_at NOT', null);
+			} else {
+				$query->where('processed_at', null);
+			}
+		}
+
+		if ($limit) {
+			$query->limit($limit);
 		}
 
 		return $query;

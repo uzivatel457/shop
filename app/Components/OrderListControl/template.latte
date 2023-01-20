@@ -1,0 +1,11 @@
+{foreach $lastOrders as $order}
+    {foreach $order->related('order_item') as $item}
+        {$item->quantity}
+        {$item->buy_price}
+        {$item->product->name}
+    {/foreach}
+    {$order->total_price}
+{/foreach}
+
+
+Total pending price: {$totalPendingPrice}
