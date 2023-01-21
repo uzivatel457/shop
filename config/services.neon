@@ -9,7 +9,12 @@ search:
 services:
 	- App\Services\Authenticator
 	security.passwords: Nette\Security\Passwords(::PASSWORD_BCRYPT, [cost: 12])
-	- App\Router\RouterFactory::createRouter
+	router: App\Router\RouterFactory::createRouter
+
+	# components
 	- App\Components\LoginControl\ILoginControlFactory
 	- App\Components\LogoutControl\ILogoutControlFactory
 	- App\Components\RegisterControl\IRegisterControlFactory
+
+	# api
+	- App\ApiModule\Presenters\OrdersPresenter

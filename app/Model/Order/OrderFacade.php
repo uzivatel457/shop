@@ -9,7 +9,9 @@ use App\Exceptions\ProductNotFoundException;
 use App\Model\OrderItem\OrderItemFacade;
 use App\Model\Product\ProductFacade;
 use Nette;
+use Nette\Database\Table\ActiveRow;
 use Nette\Security\User;
+use Nette\Utils\DateTime;
 
 final class OrderFacade
 {
@@ -21,6 +23,14 @@ final class OrderFacade
 		private ProductFacade $productFacade,
 		private User $user
 	) {}
+
+
+	public function getOrder(int $id)
+	{
+		return $this->database
+			->table('order')
+			->get($id);
+	}
 
 
 	public function getOrders(?int $userId = null, ?bool $processed = null, ?int $limit = null)
@@ -77,5 +87,36 @@ final class OrderFacade
 				$this->orderItemFacade->createOrderItem($insertedOrder->id, $productId, $quantity);
 			}
 		}
+	}
+
+	public function setOrderProcessed(int $id) {
+		$this->database->table('order')
+			->where('id', $id)
+			->update([
+				'processed_at' => new DateTime()
+			]);
+	}
+
+	public function convertOrderToArray(ActiveRow $order): array
+	{
+		$orderArray = $order->toArray();
+		$userArray = $order->user->toArray();
+		unset($userArray['password']);
+		unset($userArray['email']);
+
+		$orderArray['user'] = $userArray;
+		unset($orderArray['user_id']);
+
+		$finalOrderArray = $orderArray;
+
+		foreach ($order->related('order_item') as $orderItem) {
+			$orderItemArray = $orderItem->toArray();
+			$orderItemArray['product'] = $orderItem->product->toArray();
+			unset($orderItemArray['order_id']);
+			unset($orderItemArray['product_id']);
+			$finalOrderArray['items'][] = $orderItemArray;
+		}
+
+		return $finalOrderArray;
 	}
 }
