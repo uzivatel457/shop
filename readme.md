@@ -17,7 +17,7 @@ Installation
 Run `git clone https://github.com/uzivatel457/shop.git`.
 
 ## Prepare database
-Create database and run query in `db/init.log`, which will create tables and basic data.
+Create database and run query in `db/init.sql`, which will create tables and basic data.
 
 ## Prepare configuration
 Create file `config/local.neon` with the same structure as in template file `config/local.template.neon` and configure access to database.
